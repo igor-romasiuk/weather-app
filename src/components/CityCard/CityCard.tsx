@@ -1,0 +1,70 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import type { FC } from 'react';
+import type { City } from '../../types/weather';
+import type { RootState } from '../../store';
+import { fetchWeatherForCity } from '../../store/slices/weatherSlice';
+import { useAppDispatch } from '../../App';
+import './CityCard.scss';
+
+interface CityCardProps {
+  city: City;
+  onClick?: (city: City) => void;
+}
+
+export const CityCard: FC<CityCardProps> = ({ city, onClick }) => {
+  const dispatch = useAppDispatch();
+  const cityId = city.id.toString();
+
+  const weather = useSelector((state: RootState) => state.weather.data[cityId]);
+  const status = useSelector((state: RootState) => state.weather.status[cityId] || 'idle');
+  const error = useSelector((state: RootState) => state.weather.errors[cityId]);
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchWeatherForCity({ cityId: city.id, lat: city.lat, lon: city.lon }));
+    }
+  }, [dispatch, city.id, city.lat, city.lon, status]);
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick(city);
+    }
+  };
+
+  return (
+    <div className="city-card" onClick={handleClick}>
+      <h3 className="city-card__name">{city.name}</h3>
+      <div className="city-card__details">
+        <p className="city-card__country">{city.country}</p>
+        {city.state && <p className="city-card__state">{city.state}</p>}
+      </div>
+      <div className="city-card__coordinates">
+        <span>Lat: {city.lat.toFixed(2)}</span>
+        <span>Lon: {city.lon.toFixed(2)}</span>
+      </div>
+
+      {status === 'loading' && <div className="city-card__loading">Loading weather...</div>}
+      {status === 'failed' && <div className="city-card__error">{error}</div>}
+
+      {weather && status === 'succeeded' && (
+        <div className="city-card__weather">
+          <div className="city-card__temperature">{Math.round(weather.main.temp)}°C</div>
+          <div className="city-card__weather-details">
+            <img
+              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+              alt={weather.weather[0].description}
+              className="city-card__weather-icon"
+            />
+            <span className="city-card__weather-description">{weather.weather[0].description}</span>
+          </div>
+          <div className="city-card__weather-info">
+            <span>Feels like: {Math.round(weather.main.feels_like)}°C</span>
+            <span>Humidity: {weather.main.humidity}%</span>
+            <span>Wind: {Math.round(weather.wind.speed)} m/s</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
