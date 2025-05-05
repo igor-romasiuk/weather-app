@@ -15,23 +15,26 @@ body {
 
 .app {
   min-height: 100vh;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
-.loading-message {
+.loading-message,
+.error-message {
   text-align: center;
-  padding: 2rem;
+  padding: 20px;
+  margin-top: 20px;
   font-size: 1.2rem;
-  color: #666;
 }
 
 .error-message {
-  text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
   color: #dc3545;
-  background-color: rgba(220, 53, 69, 0.1);
-  border-radius: 8px;
-  margin: 1rem auto;
-  max-width: 600px;
+}
+
+main {
+  flex: 1;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
