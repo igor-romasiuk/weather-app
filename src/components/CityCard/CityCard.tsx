@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import type { City } from '../../types/weather';
 import type { RootState } from '../../store';
 import { fetchWeatherForCity } from '../../store/slices/weatherSlice';
+import { removeCity } from '../../store/slices/citiesSlice';
 import { useAppDispatch } from '../../App';
 import './CityCard.scss';
 
@@ -37,9 +38,19 @@ export const CityCard: FC<CityCardProps> = ({ city, onClick }) => {
     dispatch(fetchWeatherForCity({ cityId: city.id, lat: city.lat, lon: city.lon }));
   };
 
+  const handleRemoveCity = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    dispatch(removeCity(city.id));
+  };
+
   return (
     <div className="city-card" onClick={handleClick}>
-      <h3 className="city-card__name">{city.name}</h3>
+      <div className="city-card__header">
+        <h3 className="city-card__name">{city.name}</h3>
+        <button className="city-card__remove-button" onClick={handleRemoveCity} title="Remove city">
+          ✕
+        </button>
+      </div>
       <div className="city-card__details">
         <p className="city-card__country">{city.country}</p>
         {city.state && <p className="city-card__state">{city.state}</p>}

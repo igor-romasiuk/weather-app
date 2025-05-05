@@ -34,14 +34,4 @@ export const getCitiesByName = async (cityName: string, limit = 10): Promise<Cit
   return response.json();
 };
 
-export const DEFAULT_CITIES = [
-  'London',
-  'New York',
-  'Tokyo',
-  'Paris',
-  'Berlin',
-  'Sydney',
-  'Kyiv',
-  'Madrid',
-  'Rome',
-];
+export const DEFAULT_CITIES = ['London', 'New York', 'Tokyo', 'Paris', 'Berlin', 'Kyiv'];
