@@ -107,4 +107,26 @@
       border-radius: 4px;
     }
   }
+
+  &__refresh-button {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background-color: #f0f8ff;
+    color: #0066cc;
+    border: 1px solid #b3d9ff;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: #d9ecff;
+    }
+
+    &:active {
+      background-color: #b3d9ff;
+    }
+  }
 }

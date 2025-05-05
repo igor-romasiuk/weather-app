@@ -32,6 +32,11 @@ export const CityCard: FC<CityCardProps> = ({ city, onClick }) => {
     }
   };
 
+  const handleRefreshWeather = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    dispatch(fetchWeatherForCity({ cityId: city.id, lat: city.lat, lon: city.lon }));
+  };
+
   return (
     <div className="city-card" onClick={handleClick}>
       <h3 className="city-card__name">{city.name}</h3>
@@ -65,6 +70,14 @@ export const CityCard: FC<CityCardProps> = ({ city, onClick }) => {
           </div>
         </div>
       )}
+
+      <button
+        className="city-card__refresh-button"
+        onClick={handleRefreshWeather}
+        title="Update weather data"
+      >
+        Update Now
+      </button>
     </div>
   );
 };
