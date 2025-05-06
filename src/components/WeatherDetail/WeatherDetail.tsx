@@ -4,6 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import type { RootState } from '../../store';
 import { fetchWeatherForCity } from '../../store/slices/weatherSlice';
 import { useAppDispatch } from '../../App';
+import { TemperatureGraph } from '../TemperatureGraph/TemperatureGraph';
 import './WeatherDetail.scss';
 
 export const WeatherDetail = () => {
@@ -17,6 +18,10 @@ export const WeatherDetail = () => {
 
   const weather = useSelector((state: RootState) =>
     cityId ? state.weather.data[cityId] : undefined
+  );
+
+  const hourlyForecast = useSelector((state: RootState) =>
+    cityId ? state.weather.hourlyForecast[cityId] : undefined
   );
 
   const status = useSelector((state: RootState) =>
@@ -105,6 +110,8 @@ export const WeatherDetail = () => {
               <p>{weather.wind.deg}°</p>
             </div>
           </div>
+
+          {hourlyForecast && <TemperatureGraph forecast={hourlyForecast} />}
         </div>
       )}
     </div>

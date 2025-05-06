@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from './store';
-import { Header } from './components/Header/Header';
 import { HomePage } from './pages/HomePage/HomePage';
 import { DetailPage } from './pages/DetailPage/DetailPage';
 import { fetchCities } from './store/slices/citiesSlice';
@@ -34,7 +33,6 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <Header />
         <main>
           <Routes>
             <Route path="/" element={<HomePage />} />
