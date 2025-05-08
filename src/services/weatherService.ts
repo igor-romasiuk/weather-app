@@ -51,4 +51,4 @@ export const getHourlyForecast = async (lat: number, lon: number): Promise<Hourl
   return response.json();
 };
 
-export const DEFAULT_CITIES = ['London', 'New York', 'Tokyo', 'Paris', 'Berlin', 'Kyiv'];
+export const DEFAULT_CITIES = ['London', 'New York', 'Paris', 'Rivne'];

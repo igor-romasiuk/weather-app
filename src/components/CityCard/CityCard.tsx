@@ -45,57 +45,64 @@ export const CityCard: FC<CityCardProps> = ({ city, onClick }) => {
 
   return (
     <div className="city-card" onClick={handleClick}>
-      <div className="city-card__header">
-        <h3 className="city-card__name">{city.name}</h3>
-        <button className="city-card__remove-button" onClick={handleRemoveCity} title="Remove city">
-          ✕
-        </button>
-      </div>
-      <div className="city-card__details">
-        <p className="city-card__country">{city.country}</p>
-        {city.state && <p className="city-card__state">{city.state}</p>}
-      </div>
-      <div className="city-card__coordinates">
-        <span>Lat: {city.lat.toFixed(2)}</span>
-        <span>Lon: {city.lon.toFixed(2)}</span>
-      </div>
-
-      {status === 'loading' && (
-        <div className="city-card__loading">
-          <div className="loading-spinner"></div>
-          Loading weather...
+      <div className="city-card__body">
+        <div className="city-card__header">
+          <h3 className="city-card__name">{city.name}</h3>
+          <button
+            className="city-card__remove-button"
+            onClick={handleRemoveCity}
+            title="Remove city"
+          >
+            ✕
+          </button>
         </div>
-      )}
-
-      {status === 'failed' && (
-        <div className="city-card__error">
-          <span role="img" aria-label="error">
-            ⚠️
-          </span>{' '}
-          {error}
+        <div className="city-card__details">
+          <p className="city-card__country">{city.country}</p>
+          {city.state && <p className="city-card__state">{city.state}</p>}
         </div>
-      )}
+        <div className="city-card__coordinates">
+          <span>Lat: {city.lat.toFixed(2)}</span>
+          <span>Lon: {city.lon.toFixed(2)}</span>
+        </div>
 
-      {weather && status === 'succeeded' && (
-        <div className="city-card__weather">
-          <div className="city-card__temperature">{Math.round(weather.main.temp)}°C</div>
-          <div className="city-card__weather-details">
-            <img
-              src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-              alt={weather.weather[0].description}
-              className="city-card__weather-icon"
-              loading="lazy"
-            />
-            <span className="city-card__weather-description">{weather.weather[0].description}</span>
+        {status === 'loading' && (
+          <div className="city-card__loading">
+            <div className="loading-spinner"></div>
+            Loading weather...
           </div>
-          <div className="city-card__weather-info">
-            <span>Feels like: {Math.round(weather.main.feels_like)}°C</span>
-            <span>Humidity: {weather.main.humidity}%</span>
-            <span>Wind: {Math.round(weather.wind.speed)} m/s</span>
-          </div>
-        </div>
-      )}
+        )}
 
+        {status === 'failed' && (
+          <div className="city-card__error">
+            <span role="img" aria-label="error">
+              ⚠️
+            </span>{' '}
+            {error}
+          </div>
+        )}
+
+        {weather && status === 'succeeded' && (
+          <div className="city-card__weather">
+            <div className="city-card__temperature">{Math.round(weather.main.temp)}°C</div>
+            <div className="city-card__weather-details">
+              <img
+                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                alt={weather.weather[0].description}
+                className="city-card__weather-icon"
+                loading="lazy"
+              />
+              <span className="city-card__weather-description">
+                {weather.weather[0].description}
+              </span>
+            </div>
+            <div className="city-card__weather-info">
+              <span>Feels like: {Math.round(weather.main.feels_like)}°C</span>
+              <span>Humidity: {weather.main.humidity}%</span>
+              <span>Wind: {Math.round(weather.wind.speed)} m/s</span>
+            </div>
+          </div>
+        )}
+      </div>
       <button
         className="city-card__refresh-button"
         onClick={handleRefreshWeather}
