@@ -5,6 +5,14 @@ import type { CitiesState } from '../../types/citiesState';
 import { getCitiesByName, DEFAULT_CITIES } from '../../services/weatherService';
 import { loadCitiesFromStorage, saveCitiesToStorage } from '../../helpers/citiesStorage';
 
+const hasCitiesBeenInitialized = () => {
+  return localStorage.getItem('citiesInitialized') === 'true';
+};
+
+const setInitializedFlag = () => {
+  localStorage.setItem('citiesInitialized', 'true');
+};
+
 const initialState: CitiesState = {
   items: loadCitiesFromStorage(),
   status: 'idle',
@@ -16,6 +24,10 @@ export const fetchCities = createAsyncThunk('cities/fetchCities', async (_, { ge
 
   if (state.cities.items.length > 0) {
     return state.cities.items;
+  }
+
+  if (hasCitiesBeenInitialized()) {
+    return [];
   }
 
   const citiesData = await Promise.all(
@@ -37,6 +49,7 @@ export const fetchCities = createAsyncThunk('cities/fetchCities', async (_, { ge
     }));
 
   saveCitiesToStorage(validCities);
+  setInitializedFlag();
 
   return validCities;
 });

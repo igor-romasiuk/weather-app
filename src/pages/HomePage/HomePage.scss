@@ -1,54 +1,88 @@
 .home-page {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 32px 24px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 
   &__title {
-    margin: 0 0 24px;
-    font-size: 2rem;
-    color: #333;
+    margin: 0 0 32px;
+    font-size: 2.5rem;
+    color: #2c3e50;
     text-align: center;
+    font-weight: 700;
   }
 
   &__section-title {
-    margin: 0 0 16px;
-    font-size: 1.5rem;
-    color: #444;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 8px;
+    margin: 0 0 20px;
+    font-size: 1.6rem;
+    color: #3498db;
+    border-bottom: 2px solid #e0e6ed;
+    padding-bottom: 10px;
+    font-weight: 600;
   }
 
   &__search-section {
-    margin-bottom: 40px;
+    margin-bottom: 48px;
+    padding: 24px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
   }
 
   &__cities-section {
-    margin-bottom: 20px;
+    margin-bottom: 32px;
+    padding: 24px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
   }
 
   .loading-message {
-    padding: 20px;
+    padding: 32px;
     text-align: center;
-    color: #666;
-    font-size: 1rem;
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(52, 152, 219, 0.2);
+      border-radius: 50%;
+      border-top-color: #3498db;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   }
 
   .error-message {
     padding: 16px;
     margin: 20px 0;
-    color: #d32f2f;
-    background-color: #ffebee;
-    border-radius: 4px;
+    color: #e74c3c;
+    background-color: #fadbd8;
+    border-radius: 6px;
     font-size: 0.95rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
   .empty-message {
-    padding: 40px 20px;
+    padding: 48px 20px;
     text-align: center;
-    color: #666;
-    background-color: #f9f9f9;
+    color: #7f8c8d;
+    background-color: #f2f4f6;
     border-radius: 8px;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    border: 1px dashed #cbd5e0;
   }
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { searchCity, addCity } from '../../store/slices/citiesSlice';
 import { fetchWeatherForCity } from '../../store/slices/weatherSlice';
 import { useAppDispatch } from '../../App';
@@ -11,30 +11,53 @@ export const CitySearch = () => {
   const [searchResults, setSearchResults] = useState<City[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [debouncedQuery, setDebouncedQuery] = useState('');
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 500);
 
-    if (!query.trim()) return;
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [query]);
 
-    setIsSearching(true);
-    setError(null);
-
-    try {
-      const resultAction = await dispatch(searchCity(query.trim()));
-      if (searchCity.fulfilled.match(resultAction)) {
-        setSearchResults(resultAction.payload);
-        if (resultAction.payload.length === 0) {
-          setError('No cities found. Try a different search.');
-        }
-      } else {
-        setError('Failed to search for cities');
+  const performSearch = useCallback(
+    async (searchTerm: string) => {
+      if (!searchTerm.trim()) {
+        setSearchResults([]);
+        return;
       }
-    } catch (err) {
-      setError('An error occurred while searching');
-    } finally {
-      setIsSearching(false);
-    }
+
+      setIsSearching(true);
+      setError(null);
+
+      try {
+        const resultAction = await dispatch(searchCity(searchTerm.trim()));
+        if (searchCity.fulfilled.match(resultAction)) {
+          setSearchResults(resultAction.payload);
+          if (resultAction.payload.length === 0) {
+            setError('No cities found. Try a different search.');
+          }
+        } else {
+          setError('Failed to search for cities');
+        }
+      } catch (err) {
+        setError('An error occurred while searching');
+      } finally {
+        setIsSearching(false);
+      }
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    performSearch(debouncedQuery);
+  }, [debouncedQuery, performSearch]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
   };
 
   const handleAddCity = async (city: City) => {
@@ -59,22 +82,16 @@ export const CitySearch = () => {
 
   return (
     <div className="city-search">
-      <form onSubmit={handleSearch} className="city-search__form">
+      <div className="city-search__input-container">
         <input
           type="text"
           className="city-search__input"
           placeholder="Search for a city..."
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={handleInputChange}
         />
-        <button
-          type="submit"
-          className="city-search__submit-btn"
-          disabled={isSearching || !query.trim()}
-        >
-          {isSearching ? 'Searching...' : 'Search'}
-        </button>
-      </form>
+        {isSearching && <div className="city-search__loading-indicator"></div>}
+      </div>
 
       {error && <div className="city-search__error">{error}</div>}
 

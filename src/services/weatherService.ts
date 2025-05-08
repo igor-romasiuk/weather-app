@@ -3,6 +3,7 @@ import type { WeatherData, CityData, HourlyForecast } from '../types/weather';
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 const GEO_URL = 'https://api.openweathermap.org/geo/1.0';
+const ONE_CALL_URL = 'https://api.openweathermap.org/data/3.0/onecall';
 
 export const getWeatherByCoordinates = async (lat: number, lon: number): Promise<WeatherData> => {
   if (!API_KEY) {
@@ -40,7 +41,7 @@ export const getHourlyForecast = async (lat: number, lon: number): Promise<Hourl
   }
 
   const response = await fetch(
-    `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+    `${ONE_CALL_URL}?lat=${lat}&lon=${lon}&exclude=current,minutely,daily,alerts&units=metric&appid=${API_KEY}`
   );
 
   if (!response.ok) {

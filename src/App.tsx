@@ -1,11 +1,11 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from './store';
-import { HomePage } from './pages/HomePage/HomePage';
-import { DetailPage } from './pages/DetailPage/DetailPage';
+import { AnimatedRoutes } from './components/AnimatedRoutes/AnimatedRoutes';
 import { fetchCities } from './store/slices/citiesSlice';
 import { fetchWeatherForCity } from './store/slices/weatherSlice';
+import { routerConfig } from './config/routerConfig';
 import './styles/main.scss';
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
@@ -31,13 +31,10 @@ function App() {
   }, [cities, dispatch]);
 
   return (
-    <Router>
+    <Router {...routerConfig}>
       <div className="app">
         <main>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/city/:cityId" element={<DetailPage />} />
-          </Routes>
+          <AnimatedRoutes />
         </main>
       </div>
     </Router>

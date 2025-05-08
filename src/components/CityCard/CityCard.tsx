@@ -60,8 +60,21 @@ export const CityCard: FC<CityCardProps> = ({ city, onClick }) => {
         <span>Lon: {city.lon.toFixed(2)}</span>
       </div>
 
-      {status === 'loading' && <div className="city-card__loading">Loading weather...</div>}
-      {status === 'failed' && <div className="city-card__error">{error}</div>}
+      {status === 'loading' && (
+        <div className="city-card__loading">
+          <div className="loading-spinner"></div>
+          Loading weather...
+        </div>
+      )}
+
+      {status === 'failed' && (
+        <div className="city-card__error">
+          <span role="img" aria-label="error">
+            ⚠️
+          </span>{' '}
+          {error}
+        </div>
+      )}
 
       {weather && status === 'succeeded' && (
         <div className="city-card__weather">
@@ -71,6 +84,7 @@ export const CityCard: FC<CityCardProps> = ({ city, onClick }) => {
               src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
               alt={weather.weather[0].description}
               className="city-card__weather-icon"
+              loading="lazy"
             />
             <span className="city-card__weather-description">{weather.weather[0].description}</span>
           </div>
